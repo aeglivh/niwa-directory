@@ -175,6 +175,16 @@ select.niwa-input {
 .filter-pills-row::-webkit-scrollbar {
   display: none;
 }
+@media (min-width: 1024px) {
+  .filter-pills-row {
+    overflow-x: visible;
+    padding-bottom: 0;
+  }
+  .filter-pills-row .filter-pill {
+    flex: 1;
+    justify-content: center;
+  }
+}
 
 /* Filter pill */
 .filter-pill {
