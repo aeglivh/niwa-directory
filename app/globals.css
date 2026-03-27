@@ -89,7 +89,6 @@ body::after {
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  background: rgba(255, 255, 255, 0.45);
 }
 
 /* Inputs */
