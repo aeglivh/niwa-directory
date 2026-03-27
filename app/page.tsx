@@ -31,7 +31,8 @@ export default async function Home() {
           className="flex items-center justify-between px-4 sm:px-8 pt-6 mb-4"
           style={{ fontSize: '0.62rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9A958F', animation: 'fadeIn 0.5s ease 0s both' }}
         >
-          <span>Network of International Women Austria</span>
+          <span className="hidden sm:block">Network of International Women Austria</span>
+          <span className="sm:hidden">NIWA</span>
           <span>Vienna, Austria</span>
         </div>
 
@@ -84,8 +85,8 @@ export default async function Home() {
             <Link href="/submit" style={{ color: '#1A1917' }} className="hover:text-niwa-rose transition-colors">
               Submit a listing
             </Link>
-            <span style={{ color: '#D9D2C7' }}>·</span>
-            <Link href="/admin" style={{ color: '#9A958F' }} className="hover:text-ink transition-colors">
+            <span className="hidden lg:inline" style={{ color: '#D9D2C7' }}>·</span>
+            <Link href="/admin" className="hidden lg:inline hover:text-ink transition-colors" style={{ color: '#9A958F' }}>
               Admin
             </Link>
           </div>
@@ -103,11 +104,11 @@ export default async function Home() {
         className="w-full px-4 sm:px-8 py-5"
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-1">
             <p style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7670' }}>
               © NIWA — Network of International Women Austria
             </p>
-            <span style={{ color: '#B8B2A8' }}>·</span>
+            <span className="hidden sm:inline" style={{ color: '#B8B2A8' }}>·</span>
             <a
               href="https://niwa-at.org"
               target="_blank"
@@ -118,22 +119,14 @@ export default async function Home() {
               niwa-at.org
             </a>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-x-4 gap-y-1">
             <span style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7670' }}>
               Made by Studio Egli Labs
             </span>
-            <span style={{ color: '#B8B2A8' }}>·</span>
+            <span className="hidden sm:inline" style={{ color: '#B8B2A8' }}>·</span>
             <span style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7670' }}>
               v1.0
             </span>
-            <span style={{ color: '#B8B2A8' }}>·</span>
-            <Link
-              href="/submit"
-              style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7670' }}
-              className="hover:text-ink transition-colors"
-            >
-              Submit a listing
-            </Link>
           </div>
         </div>
       </footer>

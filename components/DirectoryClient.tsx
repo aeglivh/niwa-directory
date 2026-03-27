@@ -81,9 +81,9 @@ export default function DirectoryClient({ listings }: { listings: Listing[] }) {
       </div>
 
       {/* Category filter pills */}
-      <div className="flex gap-1.5 mb-8">
+      <div className="filter-pills-row mb-8">
         <button
-          className={`filter-pill flex-1 justify-center ${activeCategory === 'All' ? 'active' : ''}`}
+          className={`filter-pill shrink-0 lg:flex-1 lg:justify-center ${activeCategory === 'All' ? 'active' : ''}`}
           onClick={() => setActiveCategory('All')}
         >
           All
@@ -93,7 +93,7 @@ export default function DirectoryClient({ listings }: { listings: Listing[] }) {
           return (
             <button
               key={cat.label}
-              className={`filter-pill flex-1 justify-center ${activeCategory === cat.label ? 'active' : ''}`}
+              className={`filter-pill shrink-0 lg:flex-1 lg:justify-center ${activeCategory === cat.label ? 'active' : ''}`}
               onClick={() => setActiveCategory(cat.label)}
             >
               <Icon size={11} />
