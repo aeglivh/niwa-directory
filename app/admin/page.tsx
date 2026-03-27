@@ -78,7 +78,7 @@ function AddListingForm({ onAdded }: { onAdded: () => void }) {
             </label>
             <select name="category" required className="niwa-input" value={category} onChange={e => setCategory(e.target.value)}>
               <option value="">Select…</option>
-              {CATEGORIES.map(c => <option key={c.label} value={c.label}>{c.icon} {c.label}</option>)}
+              {CATEGORIES.map(c => <option key={c.label} value={c.label}>{c.label}</option>)}
             </select>
           </div>
 
@@ -130,7 +130,7 @@ function ListingRow({ listing, onAction }: { listing: Listing; onAction: () => v
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.35rem' }}>
-            <span className={`category-pill ${cat?.color}`}>{cat?.icon} {listing.category}</span>
+            <span className={`category-pill ${cat?.color}`}>{listing.category}</span>
             {listing.specialty && <span style={{ fontSize: '0.65rem', color: '#9A958F', letterSpacing: '0.06em' }}>{listing.specialty}</span>}
             {listing.district && <span style={{ fontSize: '0.65rem', color: '#9A958F' }}>{listing.district}. Bezirk</span>}
           </div>

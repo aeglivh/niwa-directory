@@ -7,9 +7,10 @@ import { useState } from 'react'
 
 function CategoryBadge({ category }: { category: string }) {
   const cat = CATEGORIES.find((c) => c.label === category)
+  const Icon = cat?.icon
   return (
-    <span className={`category-pill ${cat?.color ?? 'bg-stone-50 text-stone-700 border-stone-200'}`}>
-      <span>{cat?.icon}</span>
+    <span className={`category-pill ${cat?.color ?? 'text-stone-700 border-stone-400'}`}>
+      {Icon && <Icon size={10} />}
       {category}
     </span>
   )

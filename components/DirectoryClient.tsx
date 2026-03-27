@@ -88,15 +88,19 @@ export default function DirectoryClient({ listings }: { listings: Listing[] }) {
         >
           All
         </button>
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat.label}
-            className={`filter-pill ${activeCategory === cat.label ? 'active' : ''}`}
-            onClick={() => setActiveCategory(cat.label)}
-          >
-            {cat.icon} {cat.label}
-          </button>
-        ))}
+        {CATEGORIES.map((cat) => {
+          const Icon = cat.icon
+          return (
+            <button
+              key={cat.label}
+              className={`filter-pill ${activeCategory === cat.label ? 'active' : ''}`}
+              onClick={() => setActiveCategory(cat.label)}
+            >
+              <Icon size={11} />
+              {cat.label}
+            </button>
+          )
+        })}
       </div>
 
       {/* Results count */}

@@ -1,12 +1,13 @@
 import { Category } from './types'
+import { Stethoscope, UtensilsCrossed, ShoppingBag, Leaf, Ticket, Briefcase, LucideIcon } from 'lucide-react'
 
-export const CATEGORIES: { label: Category; icon: string; color: string }[] = [
-  { label: 'Doctors', icon: '⚕️', color: 'bg-rose-50 text-rose-800 border-rose-200' },
-  { label: 'Food & Drink', icon: '☕', color: 'bg-amber-50 text-amber-800 border-amber-200' },
-  { label: 'Shopping & Markets', icon: '🛍', color: 'bg-stone-50 text-stone-800 border-stone-200' },
-  { label: 'Health & Wellness', icon: '🌿', color: 'bg-green-50 text-green-800 border-green-200' },
-  { label: 'Events & Culture', icon: '🎭', color: 'bg-purple-50 text-purple-800 border-purple-200' },
-  { label: 'Services', icon: '✦', color: 'bg-blue-50 text-blue-800 border-blue-200' },
+export const CATEGORIES: { label: Category; icon: LucideIcon; color: string }[] = [
+  { label: 'Doctors', icon: Stethoscope, color: 'text-rose-800 border-rose-300' },
+  { label: 'Food & Drink', icon: UtensilsCrossed, color: 'text-amber-800 border-amber-300' },
+  { label: 'Shopping & Markets', icon: ShoppingBag, color: 'text-stone-700 border-stone-400' },
+  { label: 'Health & Wellness', icon: Leaf, color: 'text-green-800 border-green-300' },
+  { label: 'Events & Culture', icon: Ticket, color: 'text-purple-800 border-purple-300' },
+  { label: 'Services', icon: Briefcase, color: 'text-blue-800 border-blue-300' },
 ]
 
 export const VIENNA_DISTRICTS = Array.from({ length: 23 }, (_, i) => ({

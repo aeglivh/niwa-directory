@@ -135,7 +135,7 @@ export default function SubmitPage() {
               <option value="">Select a category…</option>
               {CATEGORIES.map((c) => (
                 <option key={c.label} value={c.label}>
-                  {c.icon} {c.label}
+                  {c.label}
                 </option>
               ))}
             </select>

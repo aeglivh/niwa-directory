@@ -97,27 +97,37 @@ export default async function Home() {
 
       {/* Footer */}
       <footer
-        style={{ borderTop: '1px solid #D9D2C7' }}
-        className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-6"
+        style={{ borderTop: '1px solid #B8B2A8' }}
+        className="w-full px-4 sm:px-8 py-5"
       >
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9A958F' }}>
-            © NIWA — Network of International Women Austria
-          </p>
           <div className="flex items-center gap-4">
+            <p style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7670' }}>
+              © NIWA — Network of International Women Austria
+            </p>
+            <span style={{ color: '#B8B2A8' }}>·</span>
             <a
               href="https://niwa-at.org"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9A958F' }}
+              style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7670' }}
               className="hover:text-ink transition-colors"
             >
               niwa-at.org
             </a>
-            <span style={{ color: '#D9D2C7' }}>·</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <span style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7670' }}>
+              Made by Studio Egli Labs
+            </span>
+            <span style={{ color: '#B8B2A8' }}>·</span>
+            <span style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7670' }}>
+              v1.0
+            </span>
+            <span style={{ color: '#B8B2A8' }}>·</span>
             <Link
               href="/submit"
-              style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9A958F' }}
+              style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7670' }}
               className="hover:text-ink transition-colors"
             >
               Submit a listing
