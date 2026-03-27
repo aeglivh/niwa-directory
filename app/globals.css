@@ -80,15 +80,16 @@ body::after {
 
 /* Category pill */
 .category-pill {
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 0.2rem 0.5rem;
+  padding: 0.25rem 0.55rem;
   border: 1px solid currentColor;
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
+  background: rgba(255, 255, 255, 0.45);
 }
 
 /* Inputs */
