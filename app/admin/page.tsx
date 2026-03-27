@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Listing } from '@/lib/types'
 import { CATEGORIES } from '@/lib/constants'
 import Link from 'next/link'
-import { ArrowLeft, Check, X, Plus, RefreshCw, ExternalLink, AtSign, LogOut } from 'lucide-react'
+import { ArrowLeft, Check, X, Plus, RefreshCw, ExternalLink, AtSign, LogOut, Pencil, Trash2 } from 'lucide-react'
 
 // ─── Add Listing Form ────────────────────────────────────────────────
 function AddListingForm({ onAdded }: { onAdded: () => void }) {
@@ -106,9 +106,90 @@ function AddListingForm({ onAdded }: { onAdded: () => void }) {
   )
 }
 
+// ─── Edit Modal ────────────────────────────────────────────────────
+function EditModal({ listing, onClose, onSaved }: { listing: Listing; onClose: () => void; onSaved: () => void }) {
+  const [loading, setLoading] = useState(false)
+  const [category, setCategory] = useState(listing.category)
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setLoading(true)
+    const data = Object.fromEntries(new FormData(e.currentTarget))
+    const res = await fetch(`/api/admin/update?id=${listing.id}`, {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    })
+    setLoading(false)
+    if (res.ok) { onSaved(); onClose() }
+  }
+
+  return (
+    <div
+      style={{ position: 'fixed', inset: 0, background: 'rgba(26,25,23,0.6)', zIndex: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
+      onClick={e => e.target === e.currentTarget && onClose()}
+    >
+      <div style={{ background: '#D4CEC4', border: '1px solid #B8B2A8', maxWidth: '520px', width: '100%', maxHeight: '90vh', overflowY: 'auto' }}>
+        <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid #B8B2A8', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontFamily: 'var(--font-playfair)', fontSize: '1.1rem', fontWeight: 700 }}>Edit listing</span>
+          <button onClick={onClose} style={{ color: '#7A7670' }}><X size={16} /></button>
+        </div>
+        <form onSubmit={handleSubmit} style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {([
+            { name: 'name', label: 'Name', required: true, defaultValue: listing.name },
+            { name: 'description', label: 'Description', required: true, defaultValue: listing.description, type: 'textarea' },
+            { name: 'address', label: 'Address', defaultValue: listing.address ?? '' },
+            { name: 'website', label: 'Website', defaultValue: listing.website ?? '' },
+            { name: 'instagram', label: 'Instagram', defaultValue: listing.instagram ?? '' },
+            { name: 'phone', label: 'Phone', defaultValue: listing.phone ?? '' },
+            { name: 'tags', label: 'Tags (comma separated)', defaultValue: listing.tags?.join(', ') ?? '' },
+          ] as { name: string; label: string; required?: boolean; defaultValue: string; type?: string }[]).map(({ name, label, required, defaultValue, type }) => (
+            <div key={name} style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+              <label style={{ fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600 }}>
+                {label}{required && <span style={{ color: '#C9A8A8' }}> *</span>}
+              </label>
+              {type === 'textarea'
+                ? <textarea name={name} required={required} defaultValue={defaultValue} className="niwa-input" style={{ minHeight: '4rem', resize: 'vertical' }} />
+                : <input name={name} required={required} defaultValue={defaultValue} className="niwa-input" />}
+            </div>
+          ))}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+            <label style={{ fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600 }}>
+              Category <span style={{ color: '#C9A8A8' }}>*</span>
+            </label>
+            <select name="category" required className="niwa-input" value={category} onChange={e => setCategory(e.target.value as typeof category)}>
+              {CATEGORIES.map(c => <option key={c.label} value={c.label}>{c.label}</option>)}
+            </select>
+          </div>
+
+          {category === 'Doctors' && (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+              <label style={{ fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600 }}>Specialty</label>
+              <input name="specialty" defaultValue={listing.specialty ?? ''} className="niwa-input" placeholder="e.g. Gynecologist" />
+            </div>
+          )}
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+            <label style={{ fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600 }}>District</label>
+            <input name="district" type="number" min={1} max={23} defaultValue={listing.district ?? ''} className="niwa-input" placeholder="1–23" />
+          </div>
+
+          <div style={{ borderTop: '1px solid #B8B2A8', paddingTop: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
+            <button type="button" onClick={onClose} className="niwa-btn niwa-btn-outline">Cancel</button>
+            <button type="submit" className="niwa-btn" disabled={loading}>{loading ? 'Saving…' : 'Save changes'}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  )
+}
+
 // ─── Listing Row ───────────────────────────────────────────────────
 function ListingRow({ listing, onAction }: { listing: Listing; onAction: () => void }) {
-  const [loading, setLoading] = useState<'approve' | 'reject' | null>(null)
+  const [loading, setLoading] = useState<'approve' | 'reject' | 'delete' | null>(null)
+  const [editing, setEditing] = useState(false)
+  const [confirmDelete, setConfirmDelete] = useState(false)
   const cat = CATEGORIES.find(c => c.label === listing.category)
 
   async function approve() {
@@ -125,59 +206,98 @@ function ListingRow({ listing, onAction }: { listing: Listing; onAction: () => v
     onAction()
   }
 
+  async function deleteListing() {
+    setLoading('delete')
+    await fetch(`/api/admin/delete?id=${listing.id}`, { method: 'DELETE' })
+    setLoading(null)
+    onAction()
+  }
+
+  const iconBtn = { padding: '0.4rem', border: '1px solid #B8B2A8', background: 'transparent', cursor: 'pointer', color: '#7A7670', display: 'flex', alignItems: 'center' }
+
   return (
-    <div style={{ background: '#FDFAF5', border: '1px solid #D9D2C7', padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.35rem' }}>
-            <span className={`category-pill ${cat?.color}`}>{listing.category}</span>
-            {listing.specialty && <span style={{ fontSize: '0.65rem', color: '#9A958F', letterSpacing: '0.06em' }}>{listing.specialty}</span>}
-            {listing.district && <span style={{ fontSize: '0.65rem', color: '#9A958F' }}>{listing.district}. Bezirk</span>}
-          </div>
-          <p style={{ fontFamily: 'var(--font-playfair)', fontSize: '1.05rem', fontWeight: 700, color: '#1A1917', marginBottom: '0.25rem' }}>
-            {listing.name}
-          </p>
-          <p style={{ fontSize: '0.8rem', color: '#4A4845', lineHeight: 1.5 }}>{listing.description}</p>
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
-            {listing.website && (
-              <a href={listing.website} target="_blank" rel="noopener noreferrer"
-                style={{ fontSize: '0.7rem', color: '#4A4845', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <ExternalLink size={10} /> {listing.website.replace(/^https?:\/\//, '').split('/')[0]}
-              </a>
+    <>
+      {editing && <EditModal listing={listing} onClose={() => setEditing(false)} onSaved={onAction} />}
+
+      <div style={{ background: '#D4CEC4', border: '1px solid #B8B2A8', padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+          <div style={{ flex: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.35rem' }}>
+              <span className={`category-pill ${cat?.color}`}>{listing.category}</span>
+              {listing.specialty && <span style={{ fontSize: '0.65rem', color: '#7A7670', letterSpacing: '0.06em' }}>{listing.specialty}</span>}
+              {listing.district && <span style={{ fontSize: '0.65rem', color: '#7A7670' }}>{listing.district}. Bezirk</span>}
+            </div>
+            <p style={{ fontFamily: 'var(--font-playfair)', fontSize: '1.05rem', fontWeight: 700, color: '#1A1917', marginBottom: '0.25rem' }}>{listing.name}</p>
+            <p style={{ fontSize: '0.8rem', color: '#4A4845', lineHeight: 1.5 }}>{listing.description}</p>
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+              {listing.website && (
+                <a href={listing.website} target="_blank" rel="noopener noreferrer" style={{ fontSize: '0.7rem', color: '#4A4845', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <ExternalLink size={10} /> {listing.website.replace(/^https?:\/\//, '').split('/')[0]}
+                </a>
+              )}
+              {listing.instagram && (
+                <span style={{ fontSize: '0.7rem', color: '#C9A8A8', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                  <AtSign size={10} /> {listing.instagram}
+                </span>
+              )}
+            </div>
+            {listing.submitted_by && (
+              <p style={{ fontSize: '0.65rem', color: '#7A7670', marginTop: '0.5rem' }}>
+                Submitted by {listing.submitted_by} · {new Date(listing.submitted_at).toLocaleDateString('en-GB')}
+              </p>
             )}
-            {listing.instagram && (
-              <span style={{ fontSize: '0.7rem', color: '#C9A8A8', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                <AtSign size={10} /> {listing.instagram}
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexShrink: 0, alignItems: 'flex-end' }}>
+            {/* Approve / reject for pending */}
+            {listing.status === 'pending' && (
+              <div style={{ display: 'flex', gap: '0.5rem' }}>
+                <button onClick={approve} disabled={!!loading}
+                  style={{ padding: '0.5rem 0.875rem', fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, border: '1px solid #1A1917', background: '#1A1917', color: '#CCC6BA', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <Check size={11} /> {loading === 'approve' ? '…' : 'Approve'}
+                </button>
+                <button onClick={reject} disabled={!!loading}
+                  style={{ padding: '0.5rem 0.875rem', fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, border: '1px solid #B8B2A8', background: 'transparent', color: '#7A7670', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <X size={11} /> {loading === 'reject' ? '…' : 'Reject'}
+                </button>
+              </div>
+            )}
+
+            {listing.status === 'published' && (
+              <span style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7670', border: '1px solid #B8B2A8', padding: '0.2rem 0.5rem' }}>
+                Published
               </span>
             )}
+
+            {/* Edit + Delete — always visible */}
+            <div style={{ display: 'flex', gap: '0.4rem' }}>
+              <button onClick={() => setEditing(true)} style={iconBtn} title="Edit listing">
+                <Pencil size={12} />
+              </button>
+              {confirmDelete
+                ? (
+                  <div style={{ display: 'flex', gap: '0.3rem', alignItems: 'center' }}>
+                    <span style={{ fontSize: '0.6rem', color: '#7A7670' }}>Delete?</span>
+                    <button onClick={deleteListing} disabled={loading === 'delete'}
+                      style={{ ...iconBtn, border: '1px solid #C9A8A8', color: '#9A3333' }} title="Confirm delete">
+                      <Check size={12} />
+                    </button>
+                    <button onClick={() => setConfirmDelete(false)} style={iconBtn} title="Cancel">
+                      <X size={12} />
+                    </button>
+                  </div>
+                )
+                : (
+                  <button onClick={() => setConfirmDelete(true)} style={iconBtn} title="Delete listing">
+                    <Trash2 size={12} />
+                  </button>
+                )
+              }
+            </div>
           </div>
-          {listing.submitted_by && (
-            <p style={{ fontSize: '0.65rem', color: '#9A958F', marginTop: '0.5rem' }}>
-              Submitted by {listing.submitted_by} · {new Date(listing.submitted_at).toLocaleDateString('en-GB')}
-            </p>
-          )}
         </div>
-
-        {listing.status === 'pending' && (
-          <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
-            <button onClick={approve} disabled={!!loading}
-              style={{ padding: '0.5rem 0.875rem', fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, border: '1px solid #1A1917', background: '#1A1917', color: '#F4EFE6', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <Check size={11} /> {loading === 'approve' ? '…' : 'Approve'}
-            </button>
-            <button onClick={reject} disabled={!!loading}
-              style={{ padding: '0.5rem 0.875rem', fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, border: '1px solid #D9D2C7', background: 'transparent', color: '#9A958F', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-              <X size={11} /> {loading === 'reject' ? '…' : 'Reject'}
-            </button>
-          </div>
-        )}
-
-        {listing.status === 'published' && (
-          <span style={{ fontSize: '0.6rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9A958F', border: '1px solid #D9D2C7', padding: '0.2rem 0.5rem' }}>
-            Published
-          </span>
-        )}
       </div>
-    </div>
+    </>
   )
 }
 
