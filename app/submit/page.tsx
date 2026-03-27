@@ -232,6 +232,20 @@ export default function SubmitPage() {
             <input name="submitted_by" className="niwa-input" placeholder="Optional — only visible to admin" />
           </div>
 
+          {/* NIWA member */}
+          <div className="flex items-start gap-3" style={{ padding: '0.875rem 1rem', border: '1px solid #D9D2C7', background: '#F5EDED' }}>
+            <input
+              type="checkbox"
+              name="is_niwa_member"
+              id="is_niwa_member"
+              style={{ marginTop: '2px', width: '14px', height: '14px', accentColor: '#8B5E5E', cursor: 'pointer', flexShrink: 0 }}
+            />
+            <label htmlFor="is_niwa_member" style={{ cursor: 'pointer' }}>
+              <p style={{ fontSize: '0.72rem', fontWeight: 600, color: '#1A1917', marginBottom: '0.2rem' }}>I am a NIWA member submitting my own business</p>
+              <p style={{ fontSize: '0.7rem', color: '#7A7670', lineHeight: 1.5 }}>Verified member businesses receive a special badge on their listing.</p>
+            </label>
+          </div>
+
           {state === 'error' && (
             <div
               style={{

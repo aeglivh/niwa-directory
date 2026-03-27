@@ -1,5 +1,5 @@
 import { Category } from './types'
-import { Stethoscope, UtensilsCrossed, ShoppingBag, Leaf, Ticket, Briefcase, LucideIcon } from 'lucide-react'
+import { Stethoscope, UtensilsCrossed, ShoppingBag, Leaf, Ticket, Briefcase, Sparkles, Users, LucideIcon } from 'lucide-react'
 
 export const CATEGORIES: { label: Category; icon: LucideIcon; color: string }[] = [
   { label: 'Doctors', icon: Stethoscope, color: 'text-red-700 border-red-300' },
@@ -8,6 +8,8 @@ export const CATEGORIES: { label: Category; icon: LucideIcon; color: string }[] 
   { label: 'Health & Wellness', icon: Leaf, color: 'text-emerald-700 border-emerald-300' },
   { label: 'Events & Culture', icon: Ticket, color: 'text-fuchsia-700 border-fuchsia-300' },
   { label: 'Services', icon: Briefcase, color: 'text-sky-700 border-sky-300' },
+  { label: 'Beauty & Style', icon: Sparkles, color: 'text-pink-600 border-pink-300' },
+  { label: 'Coaching & Consulting', icon: Users, color: 'text-violet-700 border-violet-300' },
 ]
 
 export const VIENNA_DISTRICTS = Array.from({ length: 23 }, (_, i) => ({

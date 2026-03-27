@@ -2,7 +2,7 @@
 
 import { Listing } from '@/lib/types'
 import { CATEGORIES } from '@/lib/constants'
-import { ExternalLink, AtSign, MapPin, Phone } from 'lucide-react'
+import { ExternalLink, AtSign, MapPin, Phone, Star } from 'lucide-react'
 import { useState } from 'react'
 
 function CategoryBadge({ category }: { category: string }) {
@@ -67,9 +67,17 @@ export default function ListingCard({ listing }: { listing: Listing }) {
       <div className="p-4 flex flex-col gap-2 flex-1">
         {/* Category + district row */}
         <div className="flex items-center justify-between gap-2 flex-wrap">
-          <CategoryBadge category={listing.category} />
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <CategoryBadge category={listing.category} />
+            {listing.is_niwa_member && (
+              <span className="member-badge">
+                <Star size={8} aria-hidden="true" />
+                Member
+              </span>
+            )}
+          </div>
           {listing.district && (
-            <span className="flex items-center gap-1 text-ink-muted" style={{ fontSize: '0.65rem', letterSpacing: '0.08em' }}>
+            <span className="flex items-center gap-1 text-ink-muted" style={{ fontSize: '0.65rem', letterSpacing: '0.08em', marginLeft: 'auto' }}>
               <MapPin size={10} />
               {listing.district}. Bezirk
             </span>

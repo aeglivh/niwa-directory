@@ -5,6 +5,8 @@ export type Category =
   | 'Health & Wellness'
   | 'Events & Culture'
   | 'Services'
+  | 'Beauty & Style'
+  | 'Coaching & Consulting'
 
 export type ListingStatus = 'pending' | 'published' | 'rejected'
 
@@ -25,6 +27,7 @@ export interface Listing {
   submitted_at: string
   published_at?: string | null
   og_image?: string | null
+  is_niwa_member?: boolean | null
 }
 
 export interface SubmitFormData {

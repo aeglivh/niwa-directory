@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
-  const { name, category, specialty, description, address, district, website, instagram, phone, tags, submitted_by } = body
+  const { name, category, specialty, description, address, district, website, instagram, phone, tags, submitted_by, is_niwa_member } = body
 
   // Validation
   if (!name?.trim()) return Response.json({ error: 'Name is required' }, { status: 400 })
@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
     phone: phone?.trim() || null,
     tags: parsedTags,
     submitted_by: submitted_by?.trim() || null,
+    is_niwa_member: is_niwa_member === 'on' || is_niwa_member === 'true',
     status: 'pending',
   })
 

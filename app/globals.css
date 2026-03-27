@@ -215,6 +215,21 @@ select.niwa-input {
   color: #F4EFE6;
 }
 
+/* NIWA Member badge */
+.member-badge {
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.18rem 0.45rem;
+  border: 1px solid #C9A8A8;
+  color: #8B5E5E;
+  background: #F5EDED;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 /* Card links — WCAG AA compliant (#1A1917 on #E0DBD3 = ~15:1 contrast) */
 .card-link {
   font-size: 0.72rem;

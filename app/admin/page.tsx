@@ -4,13 +4,14 @@ import { useState, useEffect, useCallback } from 'react'
 import { Listing } from '@/lib/types'
 import { CATEGORIES } from '@/lib/constants'
 import Link from 'next/link'
-import { ArrowLeft, Check, X, Plus, RefreshCw, ExternalLink, AtSign, LogOut, Pencil, Trash2 } from 'lucide-react'
+import { ArrowLeft, Check, X, Plus, RefreshCw, ExternalLink, AtSign, LogOut, Pencil, Trash2, Star } from 'lucide-react'
 
 // ─── Add Listing Form ────────────────────────────────────────────────
 function AddListingForm({ onAdded }: { onAdded: () => void }) {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(false)
   const [category, setCategory] = useState('')
+  const [isMember, setIsMember] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -19,7 +20,7 @@ function AddListingForm({ onAdded }: { onAdded: () => void }) {
     const res = await fetch('/api/admin/add', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, is_niwa_member: isMember }),
     })
     setLoading(false)
     if (res.ok) {
@@ -96,6 +97,19 @@ function AddListingForm({ onAdded }: { onAdded: () => void }) {
             <input name="district" type="number" min={1} max={23} className="niwa-input" placeholder="1–23" />
           </div>
 
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <input
+              type="checkbox"
+              id="add-member"
+              checked={isMember}
+              onChange={e => setIsMember(e.target.checked)}
+              style={{ width: '14px', height: '14px', accentColor: '#8B5E5E', cursor: 'pointer' }}
+            />
+            <label htmlFor="add-member" style={{ fontSize: '0.65rem', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600, cursor: 'pointer', color: '#4A4845' }}>
+              NIWA Member Business
+            </label>
+          </div>
+
           <div style={{ borderTop: '1px solid #D9D2C7', paddingTop: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
             <button type="button" onClick={() => setOpen(false)} className="niwa-btn niwa-btn-outline">Cancel</button>
             <button type="submit" className="niwa-btn" disabled={loading}>{loading ? 'Adding…' : 'Add listing'}</button>
@@ -110,6 +124,7 @@ function AddListingForm({ onAdded }: { onAdded: () => void }) {
 function EditModal({ listing, onClose, onSaved }: { listing: Listing; onClose: () => void; onSaved: () => void }) {
   const [loading, setLoading] = useState(false)
   const [category, setCategory] = useState(listing.category)
+  const [isMember, setIsMember] = useState(listing.is_niwa_member ?? false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -118,7 +133,7 @@ function EditModal({ listing, onClose, onSaved }: { listing: Listing; onClose: (
     const res = await fetch(`/api/admin/update?id=${listing.id}`, {
       method: 'PATCH',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, is_niwa_member: isMember }),
     })
     setLoading(false)
     if (res.ok) { onSaved(); onClose() }
@@ -175,6 +190,19 @@ function EditModal({ listing, onClose, onSaved }: { listing: Listing; onClose: (
             <input name="district" type="number" min={1} max={23} defaultValue={listing.district ?? ''} className="niwa-input" placeholder="1–23" />
           </div>
 
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <input
+              type="checkbox"
+              id="edit-member"
+              checked={isMember}
+              onChange={e => setIsMember(e.target.checked)}
+              style={{ width: '14px', height: '14px', accentColor: '#8B5E5E', cursor: 'pointer' }}
+            />
+            <label htmlFor="edit-member" style={{ fontSize: '0.65rem', letterSpacing: '0.08em', textTransform: 'uppercase', fontWeight: 600, cursor: 'pointer', color: '#4A4845' }}>
+              NIWA Member Business
+            </label>
+          </div>
+
           <div style={{ borderTop: '1px solid #B8B2A8', paddingTop: '1rem', display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
             <button type="button" onClick={onClose} className="niwa-btn niwa-btn-outline">Cancel</button>
             <button type="submit" className="niwa-btn" disabled={loading}>{loading ? 'Saving…' : 'Save changes'}</button>
@@ -224,6 +252,9 @@ function ListingRow({ listing, onAction }: { listing: Listing; onAction: () => v
           <div style={{ flex: 1 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.35rem' }}>
               <span className={`category-pill ${cat?.color}`}>{listing.category}</span>
+              {listing.is_niwa_member && (
+                <span className="member-badge"><Star size={8} /> Member</span>
+              )}
               {listing.specialty && <span style={{ fontSize: '0.65rem', color: '#7A7670', letterSpacing: '0.06em' }}>{listing.specialty}</span>}
               {listing.district && <span style={{ fontSize: '0.65rem', color: '#7A7670' }}>{listing.district}. Bezirk</span>}
             </div>
