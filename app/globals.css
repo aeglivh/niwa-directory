@@ -179,10 +179,7 @@ select.niwa-input {
   .filter-pills-row {
     overflow-x: visible;
     padding-bottom: 0;
-  }
-  .filter-pills-row .filter-pill {
-    flex: 1;
-    justify-content: center;
+    flex-wrap: wrap;
   }
 }
 
