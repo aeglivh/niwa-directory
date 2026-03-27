@@ -26,70 +26,68 @@ export default async function Home() {
     <div className="flex flex-col min-h-screen">
       {/* Masthead */}
       <header style={{ borderBottom: '1px solid #D9D2C7' }}>
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 pb-0">
-          {/* Top bar */}
-          <div
-            className="flex items-center justify-between mb-4"
-            style={{ fontSize: '0.62rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9A958F' }}
-          >
-            <span>Network of International Women Austria</span>
-            <span>Vienna, Austria</span>
-          </div>
-
-          {/* Double rule */}
-          <div className="rule-double mb-4" />
-
-          {/* Title */}
-          <div className="text-center pb-5">
-            <h1
-              style={{
-                fontFamily: 'var(--font-playfair)',
-                fontSize: 'clamp(2.8rem, 8vw, 6rem)',
-                fontWeight: 900,
-                letterSpacing: '-0.03em',
-                lineHeight: 0.9,
-                color: '#1A1917',
-              }}
-            >
-              NIWA
-            </h1>
-            <p
-              style={{
-                fontFamily: 'var(--font-playfair)',
-                fontSize: 'clamp(0.7rem, 2vw, 1rem)',
-                fontWeight: 400,
-                letterSpacing: '0.35em',
-                textTransform: 'uppercase',
-                color: '#9A958F',
-                marginTop: '0.35rem',
-              }}
-            >
-              Vienna Directory
-            </p>
-          </div>
-
-          {/* Bottom rule */}
-          <div className="rule-double" />
-
-          {/* Nav bar */}
-          <nav
-            className="flex items-center justify-between py-2"
-            style={{ fontSize: '0.62rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}
-          >
-            <span style={{ color: '#9A958F' }}>
-              {listings.length} curated listings
-            </span>
-            <div className="flex items-center gap-4">
-              <Link href="/submit" style={{ color: '#1A1917' }} className="hover:text-niwa-rose transition-colors">
-                Submit a listing
-              </Link>
-              <span style={{ color: '#D9D2C7' }}>·</span>
-              <Link href="/admin" style={{ color: '#9A958F' }} className="hover:text-ink transition-colors">
-                Admin
-              </Link>
-            </div>
-          </nav>
+        {/* Top bar */}
+        <div
+          className="flex items-center justify-between px-4 sm:px-8 pt-6 mb-4"
+          style={{ fontSize: '0.62rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9A958F' }}
+        >
+          <span>Network of International Women Austria</span>
+          <span>Vienna, Austria</span>
         </div>
+
+        {/* Double rule — full width */}
+        <div className="rule-double" />
+
+        {/* Title */}
+        <div className="text-center py-5">
+          <h1
+            style={{
+              fontFamily: 'var(--font-playfair)',
+              fontSize: 'clamp(2.8rem, 8vw, 6rem)',
+              fontWeight: 900,
+              letterSpacing: '-0.03em',
+              lineHeight: 0.9,
+              color: '#1A1917',
+            }}
+          >
+            NIWA
+          </h1>
+          <p
+            style={{
+              fontFamily: 'var(--font-playfair)',
+              fontSize: 'clamp(0.7rem, 2vw, 1rem)',
+              fontWeight: 400,
+              letterSpacing: '0.35em',
+              textTransform: 'uppercase',
+              color: '#9A958F',
+              marginTop: '0.35rem',
+            }}
+          >
+            Vienna Directory
+          </p>
+        </div>
+
+        {/* Bottom rule — full width */}
+        <div className="rule-double" />
+
+        {/* Nav bar */}
+        <nav
+          className="flex items-center justify-between px-4 sm:px-8 py-2"
+          style={{ fontSize: '0.62rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}
+        >
+          <span style={{ color: '#9A958F' }}>
+            {listings.length} curated listings
+          </span>
+          <div className="flex items-center gap-4">
+            <Link href="/submit" style={{ color: '#1A1917' }} className="hover:text-niwa-rose transition-colors">
+              Submit a listing
+            </Link>
+            <span style={{ color: '#D9D2C7' }}>·</span>
+            <Link href="/admin" style={{ color: '#9A958F' }} className="hover:text-ink transition-colors">
+              Admin
+            </Link>
+          </div>
+        </nav>
       </header>
 
       {/* Directory */}
