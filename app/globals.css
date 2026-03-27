@@ -2,8 +2,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-parchment: #CCC6BA;
-  --color-parchment-dark: #C0BAB0;
+  --color-parchment: #D8D2C6;
+  --color-parchment-dark: #CCC6BA;
   --color-ink: #1A1917;
   --color-ink-light: #4A4845;
   --color-ink-muted: #7A7670;
@@ -16,11 +16,11 @@
 }
 
 html {
-  background-color: #CCC6BA;
+  background-color: #D8D2C6;
 }
 
 body {
-  background-color: #CCC6BA;
+  background-color: #D8D2C6;
   color: #1A1917;
   font-family: "DM Sans", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -33,11 +33,30 @@ body::after {
   inset: 0;
   pointer-events: none;
   z-index: 9999;
-  opacity: 0.45;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+  opacity: 0.18;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 180px 180px;
-  mix-blend-mode: multiply;
+  mix-blend-mode: soft-light;
+}
+
+/* Page entrance animations */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-up,
+  .anim-fade-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 /* Newspaper double rule */
@@ -49,8 +68,8 @@ body::after {
 
 /* Editorial card */
 .listing-card {
-  background: #D4CEC4;
-  border: 1px solid #B8B2A8;
+  background: #E0DBD3;
+  border: 1px solid #A8A29A;
   transition: box-shadow 0.18s ease, transform 0.18s ease;
 }
 
@@ -74,7 +93,7 @@ body::after {
 
 /* Inputs */
 .niwa-input {
-  background: #D4CEC4;
+  background: #E0DBD3;
   border: 1px solid #B8B2A8;
   color: #1A1917;
   padding: 0.625rem 0.875rem;
@@ -146,17 +165,20 @@ select.niwa-input {
 
 /* Filter pill */
 .filter-pill {
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  padding: 0.375rem 0.875rem;
+  padding: 0.5rem 0.875rem;
   border: 1px solid #B8B2A8;
   background: transparent;
-  color: #9A958F;
+  color: #4A4845;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
 }
 
 .filter-pill:hover {
@@ -170,6 +192,30 @@ select.niwa-input {
   color: #F4EFE6;
 }
 
+/* Card links — WCAG AA compliant (#1A1917 on #E0DBD3 = ~15:1 contrast) */
+.card-link {
+  font-size: 0.72rem;
+  color: #1A1917;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  text-decoration: underline;
+  text-decoration-color: transparent;
+  text-underline-offset: 2px;
+  transition: text-decoration-color 0.15s;
+  border-radius: 2px;
+}
+
+.card-link:hover {
+  text-decoration-color: #1A1917;
+}
+
+.card-link:focus-visible {
+  outline: 2px solid #1A1917;
+  outline-offset: 2px;
+  text-decoration-color: #1A1917;
+}
+
 /* OG image shimmer */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
@@ -177,7 +223,7 @@ select.niwa-input {
 }
 
 .shimmer {
-  background: linear-gradient(90deg, #C0BAB0 25%, #CCC6BA 50%, #C0BAB0 75%);
+  background: linear-gradient(90deg, #CCC6BA 25%, #D8D2C6 50%, #CCC6BA 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }

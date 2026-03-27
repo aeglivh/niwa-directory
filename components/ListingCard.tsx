@@ -22,14 +22,18 @@ function OgImage({ src, name }: { src?: string | null; name: string }) {
 
   if (!src || error) {
     return (
-      <div className="w-full h-40 shimmer flex items-center justify-center">
+      <div
+        className="w-full h-40 flex items-center justify-center"
+        style={{ background: 'linear-gradient(135deg, #C8C2B8 0%, #D4CEC4 100%)' }}
+      >
         <span
           style={{
             fontFamily: 'var(--font-playfair)',
-            fontSize: '2rem',
+            fontSize: '3rem',
             fontWeight: 700,
-            color: '#D9D2C7',
+            color: '#B0AA9F',
             letterSpacing: '-0.02em',
+            userSelect: 'none',
           }}
         >
           {name.charAt(0).toUpperCase()}
@@ -134,17 +138,17 @@ export default function ListingCard({ listing }: { listing: Listing }) {
         {/* Links row */}
         <div
           className="flex items-center gap-3 flex-wrap mt-2 pt-3"
-          style={{ borderTop: '1px solid #D9D2C7' }}
+          style={{ borderTop: '1px solid #C8C2B8' }}
         >
           {listing.website && (
             <a
               href={listing.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:underline"
-              style={{ fontSize: '0.72rem', color: '#4A4845' }}
+              className="card-link"
+              aria-label={`Visit website: ${listing.website.replace(/^https?:\/\//, '').replace(/\/$/, '').split('/')[0]} (opens in new tab)`}
             >
-              <ExternalLink size={11} />
+              <ExternalLink size={11} aria-hidden="true" />
               {listing.website.replace(/^https?:\/\//, '').replace(/\/$/, '').split('/')[0]}
             </a>
           )}
@@ -153,19 +157,19 @@ export default function ListingCard({ listing }: { listing: Listing }) {
               href={`https://instagram.com/${instagramHandle}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 hover:underline"
-              style={{ fontSize: '0.72rem', color: '#C9A8A8' }}
+              className="card-link"
+              aria-label={`Instagram profile: @${instagramHandle} (opens in new tab)`}
             >
-              <AtSign size={11} />@{instagramHandle}
+              <AtSign size={11} aria-hidden="true" />@{instagramHandle}
             </a>
           )}
           {listing.phone && (
             <a
               href={`tel:${listing.phone}`}
-              className="flex items-center gap-1"
-              style={{ fontSize: '0.72rem', color: '#4A4845' }}
+              className="card-link"
+              aria-label={`Call ${listing.name}: ${listing.phone}`}
             >
-              <Phone size={11} />
+              <Phone size={11} aria-hidden="true" />
               {listing.phone}
             </a>
           )}

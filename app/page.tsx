@@ -29,14 +29,14 @@ export default async function Home() {
         {/* Top bar */}
         <div
           className="flex items-center justify-between px-4 sm:px-8 pt-6 mb-4"
-          style={{ fontSize: '0.62rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9A958F' }}
+          style={{ fontSize: '0.62rem', letterSpacing: '0.14em', textTransform: 'uppercase', color: '#9A958F', animation: 'fadeIn 0.5s ease 0s both' }}
         >
           <span>Network of International Women Austria</span>
           <span>Vienna, Austria</span>
         </div>
 
         {/* Double rule — full width */}
-        <div className="rule-double" />
+        <div className="rule-double" style={{ animation: 'fadeIn 0.5s ease 0.15s both' }} />
 
         {/* Title */}
         <div className="text-center py-5">
@@ -48,6 +48,7 @@ export default async function Home() {
               letterSpacing: '-0.03em',
               lineHeight: 0.9,
               color: '#1A1917',
+              animation: 'fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both',
             }}
           >
             NIWA
@@ -61,6 +62,7 @@ export default async function Home() {
               textTransform: 'uppercase',
               color: '#9A958F',
               marginTop: '0.35rem',
+              animation: 'fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both',
             }}
           >
             Vienna Directory
@@ -68,12 +70,12 @@ export default async function Home() {
         </div>
 
         {/* Bottom rule — full width */}
-        <div className="rule-double" />
+        <div className="rule-double" style={{ animation: 'fadeIn 0.5s ease 0.55s both' }} />
 
         {/* Nav bar */}
         <nav
           className="flex items-center justify-between px-4 sm:px-8 py-2"
-          style={{ fontSize: '0.62rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}
+          style={{ fontSize: '0.62rem', letterSpacing: '0.12em', textTransform: 'uppercase', animation: 'fadeIn 0.5s ease 0.65s both' }}
         >
           <span style={{ color: '#9A958F' }}>
             {listings.length} curated listings
