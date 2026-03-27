@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { isAuthenticated, unauthorizedResponse } from '@/lib/auth'
 
 function getAdmin() {
   return createClient(
@@ -9,8 +10,7 @@ function getAdmin() {
 }
 
 export async function PATCH(request: NextRequest) {
-  const pw = request.headers.get('x-admin-password')
-  if (pw !== process.env.ADMIN_PASSWORD) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!isAuthenticated(request)) return unauthorizedResponse()
 
   const id = request.nextUrl.searchParams.get('id')
   if (!id) return Response.json({ error: 'Missing id' }, { status: 400 })

@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { isAuthenticated, unauthorizedResponse } from '@/lib/auth'
 
 function getAdmin() {
   return createClient(
@@ -8,13 +9,8 @@ function getAdmin() {
   )
 }
 
-function checkAuth(request: NextRequest): boolean {
-  const pw = request.headers.get('x-admin-password')
-  return pw === process.env.ADMIN_PASSWORD
-}
-
 export async function GET(request: NextRequest) {
-  if (!checkAuth(request)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!isAuthenticated(request)) return unauthorizedResponse()
 
   const { data, error } = await getAdmin()
     .from('listings')

@@ -4,9 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Listing } from '@/lib/types'
 import { CATEGORIES } from '@/lib/constants'
 import Link from 'next/link'
-import { ArrowLeft, Check, X, Plus, RefreshCw, ExternalLink, AtSign } from 'lucide-react'
-
-const ADMIN_PASSWORD = process.env.NEXT_PUBLIC_ADMIN_PASSWORD ?? ''
+import { ArrowLeft, Check, X, Plus, RefreshCw, ExternalLink, AtSign, LogOut } from 'lucide-react'
 
 // ─── Add Listing Form ────────────────────────────────────────────────
 function AddListingForm({ onAdded }: { onAdded: () => void }) {
@@ -20,7 +18,7 @@ function AddListingForm({ onAdded }: { onAdded: () => void }) {
     const data = Object.fromEntries(new FormData(e.currentTarget))
     const res = await fetch('/api/admin/add', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-admin-password': ADMIN_PASSWORD },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),
     })
     setLoading(false)
@@ -74,7 +72,6 @@ function AddListingForm({ onAdded }: { onAdded: () => void }) {
             </div>
           ))}
 
-          {/* Category */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
             <label style={{ fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600 }}>
               Category <span style={{ color: '#C9A8A8' }}>*</span>
@@ -94,7 +91,6 @@ function AddListingForm({ onAdded }: { onAdded: () => void }) {
             </div>
           )}
 
-          {/* District */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
             <label style={{ fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', fontWeight: 600 }}>District</label>
             <input name="district" type="number" min={1} max={23} className="niwa-input" placeholder="1–23" />
@@ -117,35 +113,20 @@ function ListingRow({ listing, onAction }: { listing: Listing; onAction: () => v
 
   async function approve() {
     setLoading('approve')
-    await fetch(`/api/admin/approve?id=${listing.id}`, {
-      method: 'PATCH',
-      headers: { 'x-admin-password': ADMIN_PASSWORD },
-    })
+    await fetch(`/api/admin/approve?id=${listing.id}`, { method: 'PATCH' })
     setLoading(null)
     onAction()
   }
 
   async function reject() {
     setLoading('reject')
-    await fetch(`/api/admin/reject?id=${listing.id}`, {
-      method: 'PATCH',
-      headers: { 'x-admin-password': ADMIN_PASSWORD },
-    })
+    await fetch(`/api/admin/reject?id=${listing.id}`, { method: 'PATCH' })
     setLoading(null)
     onAction()
   }
 
   return (
-    <div
-      style={{
-        background: '#FDFAF5',
-        border: '1px solid #D9D2C7',
-        padding: '1rem 1.25rem',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.5rem',
-      }}
-    >
+    <div style={{ background: '#FDFAF5', border: '1px solid #D9D2C7', padding: '1rem 1.25rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
         <div style={{ flex: 1 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.35rem' }}>
@@ -153,12 +134,10 @@ function ListingRow({ listing, onAction }: { listing: Listing; onAction: () => v
             {listing.specialty && <span style={{ fontSize: '0.65rem', color: '#9A958F', letterSpacing: '0.06em' }}>{listing.specialty}</span>}
             {listing.district && <span style={{ fontSize: '0.65rem', color: '#9A958F' }}>{listing.district}. Bezirk</span>}
           </div>
-
           <p style={{ fontFamily: 'var(--font-playfair)', fontSize: '1.05rem', fontWeight: 700, color: '#1A1917', marginBottom: '0.25rem' }}>
             {listing.name}
           </p>
           <p style={{ fontSize: '0.8rem', color: '#4A4845', lineHeight: 1.5 }}>{listing.description}</p>
-
           <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
             {listing.website && (
               <a href={listing.website} target="_blank" rel="noopener noreferrer"
@@ -172,7 +151,6 @@ function ListingRow({ listing, onAction }: { listing: Listing; onAction: () => v
               </span>
             )}
           </div>
-
           {listing.submitted_by && (
             <p style={{ fontSize: '0.65rem', color: '#9A958F', marginTop: '0.5rem' }}>
               Submitted by {listing.submitted_by} · {new Date(listing.submitted_at).toLocaleDateString('en-GB')}
@@ -182,44 +160,12 @@ function ListingRow({ listing, onAction }: { listing: Listing; onAction: () => v
 
         {listing.status === 'pending' && (
           <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
-            <button
-              onClick={approve}
-              disabled={!!loading}
-              style={{
-                padding: '0.5rem 0.875rem',
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                fontWeight: 600,
-                border: '1px solid #1A1917',
-                background: '#1A1917',
-                color: '#F4EFE6',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.35rem',
-              }}
-            >
+            <button onClick={approve} disabled={!!loading}
+              style={{ padding: '0.5rem 0.875rem', fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, border: '1px solid #1A1917', background: '#1A1917', color: '#F4EFE6', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <Check size={11} /> {loading === 'approve' ? '…' : 'Approve'}
             </button>
-            <button
-              onClick={reject}
-              disabled={!!loading}
-              style={{
-                padding: '0.5rem 0.875rem',
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                fontWeight: 600,
-                border: '1px solid #D9D2C7',
-                background: 'transparent',
-                color: '#9A958F',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.35rem',
-              }}
-            >
+            <button onClick={reject} disabled={!!loading}
+              style={{ padding: '0.5rem 0.875rem', fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, border: '1px solid #D9D2C7', background: 'transparent', color: '#9A958F', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <X size={11} /> {loading === 'reject' ? '…' : 'Reject'}
             </button>
           </div>
@@ -239,35 +185,55 @@ function ListingRow({ listing, onAction }: { listing: Listing; onAction: () => v
 export default function AdminPage() {
   const [authed, setAuthed] = useState(false)
   const [password, setPassword] = useState('')
-  const [pwError, setPwError] = useState(false)
+  const [pwError, setPwError] = useState('')
+  const [pwLoading, setPwLoading] = useState(false)
   const [listings, setListings] = useState<Listing[]>([])
   const [tab, setTab] = useState<'pending' | 'published'>('pending')
   const [loading, setLoading] = useState(false)
 
   const fetchListings = useCallback(async () => {
     setLoading(true)
-    const res = await fetch('/api/admin/listings', {
-      headers: { 'x-admin-password': ADMIN_PASSWORD },
-    })
-    if (res.ok) {
-      const data = await res.json()
-      setListings(data)
-    }
+    const res = await fetch('/api/admin/listings')
+    if (res.status === 401) { setAuthed(false); setLoading(false); return }
+    if (res.ok) setListings(await res.json())
     setLoading(false)
+  }, [])
+
+  // Check if already logged in via cookie
+  useEffect(() => {
+    fetch('/api/admin/listings').then(res => {
+      if (res.ok) {
+        res.json().then(data => { setListings(data); setAuthed(true) })
+      }
+    })
   }, [])
 
   useEffect(() => {
     if (authed) fetchListings()
   }, [authed, fetchListings])
 
-  function handleLogin(e: React.FormEvent) {
+  async function handleLogin(e: React.FormEvent) {
     e.preventDefault()
-    if (password === ADMIN_PASSWORD) {
+    setPwLoading(true)
+    setPwError('')
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password }),
+    })
+    setPwLoading(false)
+    if (res.ok) {
       setAuthed(true)
-      setPwError(false)
+      setPassword('')
     } else {
-      setPwError(true)
+      setPwError('Incorrect password')
     }
+  }
+
+  async function handleLogout() {
+    await fetch('/api/admin/logout', { method: 'POST' })
+    setAuthed(false)
+    setListings([])
   }
 
   if (!authed) {
@@ -286,8 +252,10 @@ export default function AdminPage() {
               onChange={e => setPassword(e.target.value)}
               autoFocus
             />
-            {pwError && <p style={{ fontSize: '0.75rem', color: '#C9A8A8' }}>Incorrect password</p>}
-            <button type="submit" className="niwa-btn">Enter</button>
+            {pwError && <p style={{ fontSize: '0.75rem', color: '#C9A8A8' }}>{pwError}</p>}
+            <button type="submit" className="niwa-btn" disabled={pwLoading}>
+              {pwLoading ? 'Checking…' : 'Enter'}
+            </button>
           </form>
           <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
             <Link href="/" style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#9A958F' }}>
@@ -315,38 +283,21 @@ export default function AdminPage() {
           </div>
           <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
             <AddListingForm onAdded={fetchListings} />
-            <button
-              onClick={fetchListings}
-              style={{ padding: '0.5rem', border: '1px solid #D9D2C7', background: 'transparent', cursor: 'pointer', color: '#9A958F' }}
-              title="Refresh"
-            >
+            <button onClick={fetchListings} style={{ padding: '0.5rem', border: '1px solid #D9D2C7', background: 'transparent', cursor: 'pointer', color: '#9A958F' }} title="Refresh">
               <RefreshCw size={13} />
+            </button>
+            <button onClick={handleLogout} style={{ padding: '0.5rem', border: '1px solid #D9D2C7', background: 'transparent', cursor: 'pointer', color: '#9A958F' }} title="Log out">
+              <LogOut size={13} />
             </button>
           </div>
         </div>
       </header>
 
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
-        {/* Tabs */}
         <div style={{ display: 'flex', gap: '0', marginBottom: '1.5rem', borderBottom: '1px solid #D9D2C7' }}>
           {(['pending', 'published'] as const).map(t => (
-            <button
-              key={t}
-              onClick={() => setTab(t)}
-              style={{
-                fontSize: '0.65rem',
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                fontWeight: 600,
-                padding: '0.625rem 1.25rem',
-                border: 'none',
-                borderBottom: tab === t ? '2px solid #1A1917' : '2px solid transparent',
-                background: 'transparent',
-                color: tab === t ? '#1A1917' : '#9A958F',
-                cursor: 'pointer',
-                marginBottom: '-1px',
-              }}
-            >
+            <button key={t} onClick={() => setTab(t)}
+              style={{ fontSize: '0.65rem', letterSpacing: '0.1em', textTransform: 'uppercase', fontWeight: 600, padding: '0.625rem 1.25rem', border: 'none', borderBottom: tab === t ? '2px solid #1A1917' : '2px solid transparent', background: 'transparent', color: tab === t ? '#1A1917' : '#9A958F', cursor: 'pointer', marginBottom: '-1px' }}>
               {t} ({t === 'pending' ? pending.length : published.length})
             </button>
           ))}
@@ -362,9 +313,7 @@ export default function AdminPage() {
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            {shown.map(l => (
-              <ListingRow key={l.id} listing={l} onAction={fetchListings} />
-            ))}
+            {shown.map(l => <ListingRow key={l.id} listing={l} onAction={fetchListings} />)}
           </div>
         )}
       </main>

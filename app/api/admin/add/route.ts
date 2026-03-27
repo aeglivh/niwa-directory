@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { isAuthenticated, unauthorizedResponse } from '@/lib/auth'
 import { CATEGORIES } from '@/lib/constants'
 
 const VALID_CATEGORIES: string[] = CATEGORIES.map(c => c.label)
@@ -12,8 +13,7 @@ function getAdmin() {
 }
 
 export async function POST(request: NextRequest) {
-  const pw = request.headers.get('x-admin-password')
-  if (pw !== process.env.ADMIN_PASSWORD) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!isAuthenticated(request)) return unauthorizedResponse()
 
   let body: Record<string, string>
   try {
