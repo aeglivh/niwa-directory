@@ -130,8 +130,8 @@ export default function ListingCard({ listing }: { listing: Listing }) {
                   letterSpacing: '0.08em',
                   textTransform: 'uppercase',
                   padding: '0.15rem 0.4rem',
-                  border: '1px solid #A8A29A',
-                  color: '#4A4845',
+                  border: '1px solid #D9D2C7',
+                  color: '#9A958F',
                 }}
               >
                 {tag}
