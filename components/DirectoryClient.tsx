@@ -4,12 +4,14 @@ import { useState, useMemo } from 'react'
 import { Listing, Category } from '@/lib/types'
 import { CATEGORIES, VIENNA_DISTRICTS } from '@/lib/constants'
 import ListingCard from './ListingCard'
+import ListingModal from './ListingModal'
 import { Search, SlidersHorizontal } from 'lucide-react'
 
 export default function DirectoryClient({ listings }: { listings: Listing[] }) {
   const [query, setQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState<Category | 'All'>('All')
   const [district, setDistrict] = useState<string>('')
+  const [selected, setSelected] = useState<Listing | null>(null)
 
   const filtered = useMemo(() => {
     return listings.filter((l) => {
@@ -28,6 +30,7 @@ export default function DirectoryClient({ listings }: { listings: Listing[] }) {
 
   return (
     <>
+      {selected && <ListingModal listing={selected} onClose={() => setSelected(null)} />}
       {/* Search + district filter */}
       <div
         className="flex flex-col sm:flex-row gap-2 mb-6"
@@ -117,7 +120,7 @@ export default function DirectoryClient({ listings }: { listings: Listing[] }) {
       {filtered.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {filtered.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} />
+            <ListingCard key={listing.id} listing={listing} onClick={() => setSelected(listing)} />
           ))}
         </div>
       ) : (

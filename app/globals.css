@@ -215,13 +215,13 @@ select.niwa-input {
 /* NIWA Member badge */
 .member-badge {
   font-size: 0.58rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  padding: 0.18rem 0.45rem;
+  padding: 0.2rem 0.5rem;
   border: 1px solid #C9A8A8;
-  color: #8B5E5E;
-  background: #F5EDED;
+  color: #7A3F3F;
+  background: #F9E8E8;
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;

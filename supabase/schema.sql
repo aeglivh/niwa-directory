@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS listings (
   name TEXT NOT NULL,
   category TEXT NOT NULL CHECK (category IN (
     'Doctors', 'Food & Drink', 'Shopping & Markets',
-    'Health & Wellness', 'Events & Culture', 'Services'
+    'Health & Wellness', 'Events & Culture', 'Services',
+    'Beauty & Style', 'Coaching & Consulting'
   )),
   specialty TEXT,
   description TEXT NOT NULL,

@@ -57,11 +57,11 @@ function OgImage({ src, name }: { src?: string | null; name: string }) {
   )
 }
 
-export default function ListingCard({ listing }: { listing: Listing }) {
+export default function ListingCard({ listing, onClick }: { listing: Listing; onClick?: () => void }) {
   const instagramHandle = listing.instagram?.replace(/.*instagram\.com\//, '').replace(/\/$/, '').replace('@', '')
 
   return (
-    <article className="listing-card flex flex-col">
+    <article className="listing-card flex flex-col" onClick={onClick} style={{ cursor: onClick ? 'pointer' : undefined }}>
       <OgImage src={listing.og_image} name={listing.name} />
 
       <div className="p-4 flex flex-col gap-2 flex-1">
@@ -72,7 +72,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
             {listing.is_niwa_member && (
               <span className="member-badge">
                 <Star size={8} aria-hidden="true" />
-                Member
+                NIWA Member
               </span>
             )}
           </div>
@@ -147,6 +147,7 @@ export default function ListingCard({ listing }: { listing: Listing }) {
         <div
           className="flex items-center gap-3 flex-wrap mt-2 pt-3"
           style={{ borderTop: '1px solid #C8C2B8' }}
+          onClick={(e) => e.stopPropagation()}
         >
           {listing.website && (
             <a

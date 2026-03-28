@@ -1,6 +1,7 @@
 import { supabase } from '@/lib/supabase'
 import { Listing } from '@/lib/types'
 import DirectoryClient from '@/components/DirectoryClient'
+import AnnouncementBanner from '@/components/AnnouncementBanner'
 import Link from 'next/link'
 
 async function getListings(): Promise<Listing[]> {
@@ -24,6 +25,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col min-h-screen">
+      <AnnouncementBanner />
       {/* Masthead */}
       <header style={{ borderBottom: '1px solid #D9D2C7' }}>
         {/* Top bar */}
@@ -41,33 +43,35 @@ export default async function Home() {
 
         {/* Title */}
         <div className="text-center py-5">
-          <h1
-            style={{
-              fontFamily: 'var(--font-playfair)',
-              fontSize: 'clamp(2.8rem, 8vw, 6rem)',
-              fontWeight: 900,
-              letterSpacing: '-0.03em',
-              lineHeight: 0.9,
-              color: '#1A1917',
-              animation: 'fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both',
-            }}
-          >
-            NIWA
-          </h1>
-          <p
-            style={{
-              fontFamily: 'var(--font-playfair)',
-              fontSize: 'clamp(0.7rem, 2vw, 1rem)',
-              fontWeight: 400,
-              letterSpacing: '0.35em',
-              textTransform: 'uppercase',
-              color: '#9A958F',
-              marginTop: '0.35rem',
-              animation: 'fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both',
-            }}
-          >
-            Vienna Directory
-          </p>
+          <a href="/" style={{ display: 'inline-block', textDecoration: 'none', cursor: 'pointer' }}>
+            <h1
+              style={{
+                fontFamily: 'var(--font-playfair)',
+                fontSize: 'clamp(2.8rem, 8vw, 6rem)',
+                fontWeight: 900,
+                letterSpacing: '-0.03em',
+                lineHeight: 0.9,
+                color: '#1A1917',
+                animation: 'fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both',
+              }}
+            >
+              NIWA
+            </h1>
+            <p
+              style={{
+                fontFamily: 'var(--font-playfair)',
+                fontSize: 'clamp(0.7rem, 2vw, 1rem)',
+                fontWeight: 400,
+                letterSpacing: '0.35em',
+                textTransform: 'uppercase',
+                color: '#9A958F',
+                marginTop: '0.35rem',
+                animation: 'fadeUp 0.8s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both',
+              }}
+            >
+              Vienna Directory
+            </p>
+          </a>
         </div>
 
         {/* Bottom rule — full width */}

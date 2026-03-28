@@ -22,6 +22,13 @@ export const metadata: Metadata = {
     title: 'NIWA Vienna Directory',
     description: 'Curated by the Network of International Women Austria',
     type: 'website',
+    url: 'https://niwa-directory.vercel.app',
+    siteName: 'NIWA Vienna Directory',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'NIWA Vienna Directory',
+    description: 'Curated by the Network of International Women Austria',
   },
 }
 
