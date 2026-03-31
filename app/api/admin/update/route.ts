@@ -46,7 +46,7 @@ export async function PATCH(request: NextRequest) {
     instagram: instagram?.trim() || null,
     phone: phone?.trim() || null,
     tags: parsedTags,
-    is_niwa_member: is_niwa_member === 'true',
+    is_niwa_member: is_niwa_member === true || is_niwa_member === 'true',
   }).eq('id', id)
 
   if (error) return Response.json({ error: error.message }, { status: 500 })

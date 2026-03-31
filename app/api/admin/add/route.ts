@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     instagram: instagram?.trim() || null,
     phone: phone?.trim() || null,
     tags: parsedTags,
-    is_niwa_member: is_niwa_member === 'true',
+    is_niwa_member: is_niwa_member === true || is_niwa_member === 'true',
     status: 'published',
     published_at: new Date().toISOString(),
   })
