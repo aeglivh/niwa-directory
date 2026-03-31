@@ -144,7 +144,7 @@ export default function ListingModal({ listing, onClose }: { listing: Listing; o
             )}
             {instagramHandle && (
               <a href={`https://instagram.com/${instagramHandle}`} target="_blank" rel="noopener noreferrer" className="card-link">
-                <AtSign size={12} aria-hidden="true" />@{instagramHandle}
+                <AtSign size={12} aria-hidden="true" />{instagramHandle}
               </a>
             )}
             {listing.phone && (

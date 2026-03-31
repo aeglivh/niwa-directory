@@ -169,7 +169,7 @@ export default function ListingCard({ listing, onClick }: { listing: Listing; on
               className="card-link"
               aria-label={`Instagram profile: @${instagramHandle} (opens in new tab)`}
             >
-              <AtSign size={11} aria-hidden="true" />@{instagramHandle}
+              <AtSign size={11} aria-hidden="true" />{instagramHandle}
             </a>
           )}
           {listing.phone && (
