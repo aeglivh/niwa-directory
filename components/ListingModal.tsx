@@ -105,9 +105,11 @@ export default function ListingModal({ listing, onClose }: { listing: Listing; o
           <div style={{ borderTop: '1px solid #C8C2B8', margin: '1rem 0' }} />
 
           {/* Full description */}
-          <p style={{ fontSize: '0.875rem', color: '#4A4845', lineHeight: 1.65 }}>
-            {listing.description}
-          </p>
+          <div style={{ fontSize: '0.875rem', color: '#4A4845', lineHeight: 1.65, display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            {listing.description.split(/\n\s*\n|\n/).filter(Boolean).map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
+          </div>
 
           {/* Address */}
           {listing.address && (
