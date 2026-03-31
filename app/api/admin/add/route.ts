@@ -22,7 +22,8 @@ export async function POST(request: NextRequest) {
     return Response.json({ error: 'Invalid JSON' }, { status: 400 })
   }
 
-  const { name, category, specialty, description, address, district, website, instagram, phone, tags, is_niwa_member } = body
+  const isMember = (body as Record<string, unknown>).is_niwa_member
+  const { name, category, specialty, description, address, district, website, instagram, phone, tags } = body
 
   if (!name?.trim()) return Response.json({ error: 'Name is required' }, { status: 400 })
   if (!category || !VALID_CATEGORIES.includes(category)) return Response.json({ error: 'Valid category is required' }, { status: 400 })
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
     instagram: instagram?.trim() || null,
     phone: phone?.trim() || null,
     tags: parsedTags,
-    is_niwa_member: is_niwa_member === true || is_niwa_member === 'true',
+    is_niwa_member: isMember === true || isMember === 'true',
     status: 'published',
     published_at: new Date().toISOString(),
   })

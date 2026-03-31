@@ -4,7 +4,6 @@ import { CATEGORIES } from '@/lib/constants'
 import { Resend } from 'resend'
 
 const VALID_CATEGORIES: string[] = CATEGORIES.map(c => c.label)
-const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
   let body: Record<string, string>
@@ -59,6 +58,7 @@ export async function POST(request: NextRequest) {
 
   // Notify admin of new pending submission
   if (process.env.NOTIFY_EMAIL && process.env.RESEND_API_KEY) {
+    const resend = new Resend(process.env.RESEND_API_KEY)
     await resend.emails.send({
       from: 'NIWA Directory <onboarding@resend.dev>',
       to: process.env.NOTIFY_EMAIL,
